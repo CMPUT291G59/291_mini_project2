@@ -34,7 +34,7 @@ def makeList(fileName):
     tempFile.close()
     return clist
 
-c = makeList("10.txt")
-for i in c:
-    print(i)    
+#c = makeList("10.txt")
+#for i in c:
+    #print(i)    
 

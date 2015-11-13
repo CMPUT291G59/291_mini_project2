@@ -4,17 +4,15 @@ import fileinput
 import replaceFile
 fileName = input("please enter your file name ")
 replaceFile.replaceFile(fileName)
-tempFile=open( fileName, 'r+' )
-#tempFile1=open('reviews.txt','w+')
-i=1
-alist=[]
-for line in fileinput.input( fileName):
-    alist.append(line.replace( "product/productId: ",""))
-    if line.strip()=="":
+tempFile=open('reviews.txt','w+')
+
+alist=replaceFile.makeList(fileName)
+for i,a in enumerate(alist):
+    if i==0:
+        tempFile.write(str(i+1))
+    else:
+        tempFile.write("\n"+str(i+1))
+    for b in a:
+        tempFile.write(","+b)
         i=i+1
-for line in alist:
-    print(line)
-print(len(alist))
-        
-tempFile.close()    
-#tempFile1.close()
+tempFile.close()
