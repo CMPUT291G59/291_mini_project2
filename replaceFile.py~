@@ -24,6 +24,4 @@ def reaplaceFile(fileToSearch):
         tempFile.write( line.replace( textToSearch2, textToReplace2 ) )
     tempFile.close()
     input( '\n\n Press Enter to exit...' )
-    
-fileName = input("please enter your file name")
-reaplaceFile(fileName)
+ 
