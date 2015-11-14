@@ -117,7 +117,6 @@ def makeRterm(fileName):
         b=" ".join(b)
         b=re.sub('\W+',' ',b)
         clist.append(b)
-    
     for i,c in enumerate(clist):
         c=c.split()
         for c1 in c:
