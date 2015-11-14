@@ -9,6 +9,6 @@ out, err = p1.communicate()
 p2 = Popen('sort -u -o scores.txt scores.txt', shell=True,
           stdout=PIPE, stderr=PIPE)
 out, err = p2.communicate()
-
+print("Your file is sorted!")
 
 
