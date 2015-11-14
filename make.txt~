@@ -1,3 +1,0 @@
-sort -u -o pterms.txt pterms.txt
-sort -u -o rterms.txt rterms.txt
-sort -u -o scores.txt scores.txt
