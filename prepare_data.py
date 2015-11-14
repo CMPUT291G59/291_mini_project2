@@ -62,11 +62,6 @@ def makeReview(fileName):
             i=i+1
     tempFile.close()
 
-
-
-
-
-
 def makePterm(fileName):
     tempFile=open('pterms.txt','w+')
     blist=[]
@@ -94,12 +89,7 @@ def makePterm(fileName):
             if len(c1)>=3:
                 tempFile.write(c1.lower()+","+str(i+1)+"\n")
     tempFile.close() 
-    
-
-
-    
-    
-    
+           
 def makeRterm(fileName):
     tempFile=open('rterms.txt','w+')
     blist=[]
@@ -136,25 +126,12 @@ def makeRterm(fileName):
                 tempFile.write(c1.lower()+","+str(i+1)+"\n")
     tempFile.close()
 
-
-
-
-
-
-
-
-
-
-
-
 def makeScore(fileName):
     tempFile=open('scores.txt','w+')
     alist=makeList(fileName)
     for k,i in enumerate(alist):
         tempFile.write(str(i[6])+", "+str(k+1)+"\n")
     tempFile.close()
-
-
 
 fileName = input("please enter your file name ")    
 replaceFile(fileName)
