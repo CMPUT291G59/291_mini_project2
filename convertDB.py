@@ -11,6 +11,7 @@ def makeReviewIndex(fileName,fileName1):
             stringList = c[1:]
             stringList = ",".join(stringList)
             tempFile.write(str(stringList))
+    tempFile.write("\n")
     tempFile.close()
     file.close()    
 

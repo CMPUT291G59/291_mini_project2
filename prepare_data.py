@@ -130,7 +130,7 @@ def makeScore(fileName):
     tempFile=open('scores.txt','w+')
     alist=makeList(fileName)
     for k,i in enumerate(alist):
-        tempFile.write(str(i[6])+", "+str(k+1)+"\n")
+        tempFile.write(str(i[6])+","+str(k+1)+"\n")
     tempFile.close()
 
 fileName = input("please enter your file name ")    
