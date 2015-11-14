@@ -117,7 +117,6 @@ def makeRterm(fileName):
         b=" ".join(b)
         b=re.sub('\W+',' ',b)
         clist.append(b)
-    print(clist)
     
     for i,c in enumerate(clist):
         c=c.split()
@@ -130,7 +129,6 @@ def makeScore(fileName):
     scoreList = []
     alist=makeList(fileName)
     for k,i in enumerate(alist):
-        print(i[6])
         tempFile.write(str(i[6])+","+str(k+1)+"\n")
     tempFile.close()
 
@@ -140,3 +138,4 @@ makeReview(fileName)
 makePterm(fileName)
 makeRterm(fileName)
 makeScore(fileName)
+print("Your files are created!")
