@@ -1,7 +1,7 @@
 from bsddb3 import db
-filename = 'sc.idx'
+filename = 'rw.idx'
 reviewDB = db.DB()
-reviewDB.open(filename, None, db.DB_BTREE, db.DB_CREATE)
+reviewDB.open(filename, None, db.DB_HASH, db.DB_CREATE)
 cursor = reviewDB.cursor()
 rec = cursor.first()
 print(len(reviewDB))
