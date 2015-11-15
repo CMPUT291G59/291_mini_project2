@@ -1,5 +1,5 @@
 from bsddb3 import db
-filename = 'pt.idx'
+filename = 'rt.idx'
 reviewDB = db.DB()
 reviewDB.open(filename, None, db.DB_BTREE, db.DB_CREATE)
 cursor = reviewDB.cursor()
