@@ -1,6 +1,7 @@
 import sys 
 import os
 import csv
+import datetime
 from bsddb3 import db
 def printScreen():
     print("1. p:camera")
@@ -14,11 +15,9 @@ def printScreen():
     print("9. camera rdate > 2007/06/20")
     print("10. camera rdate > 2007/06/20 pprice > 20 pprice < 60")
     print("Press <q> to quit the system!")
-    
-def printResult(alist):
+
+def fullReviewChecker(alist):
     blist=[]
-    title = ["product/productId:","product/title:","product/price:","review/userId:","review/profileName:",
-             "review/helpfulness:","review/score:","review/time:","review/summary:","review/text:"]
     filename1 = 'rw.idx'
     reviewDB = db.DB()
     reviewDB.open(filename1, None, db.DB_HASH, db.DB_CREATE)
@@ -26,8 +25,14 @@ def printResult(alist):
         result=reviewDB.get(i)
         result=result.decode("utf-8")
         for a in csv.reader([result],skipinitialspace=True):
-            blist.append(a)
-    for b,i in enumerate(blist):
+            blist.append(a) 
+    reviewDB.close()
+    return blist
+
+def printResult(alist):
+    title = ["product/productId:","product/title:","product/price:","review/userId:","review/profileName:",
+             "review/helpfulness:","review/score:","review/time:","review/summary:","review/text:"]
+    for b,i in enumerate(alist):
         for c,e in enumerate(i):
             if c==0:
                 print(str(b+1)+"\n"+title[c]+e)
@@ -35,8 +40,8 @@ def printResult(alist):
                 print(title[c]+e+"\n")
             else:
                 print(title[c]+e)
-    reviewDB.close()
     print("You find",len(alist),"matches in the result")
+    
 def searchCamera():
     alist=[]
     filename = 'pt.idx'
@@ -51,7 +56,7 @@ def searchCamera():
             alist.append(value)
         rec = cursor.next()
     ptermDB.close()
-    printResult(alist)
+    return alist
 def searchGreat():
     alist=[]
     filename = 'rt.idx'
@@ -66,8 +71,8 @@ def searchGreat():
             alist.append(value)
         rec = cursor.next()
     rtermDB.close()
-    printResult(alist)
-def searchAllCamera(a):
+    return alist
+def searchAllCamera():
     alist=[]
     filename = 'pt.idx'
     ptermDB = db.DB()
@@ -100,11 +105,8 @@ def searchAllCamera(a):
     #print(alist)
     #print(len(alist))
     alist=list(set(alist))
-    if a=="3":
-        printResult(alist)
-    else:
-        return alist
-def searchIniralCam(a):
+    return alist
+def searchIniralCam():
     alist=[]
     filename = 'pt.idx'
     ptermDB = db.DB()
@@ -135,10 +137,7 @@ def searchIniralCam(a):
         rec1 = cursor.next()
     rtermDB.close()
     alist=list(set(alist))
-    if a=="4":
-        printResult(alist)  
-    else:
-        return alist
+    return alist
 def findGreatCam(alist):
     blist=[]
     filename = 'rt.idx'
@@ -154,7 +153,7 @@ def findGreatCam(alist):
             blist.append(value)
         rec = cursor.next()
     rtermDB.close()
-    printResult(blist)
+    return blist
 def findScore():
     alist=[]
     filename = 'sc.idx'
@@ -171,7 +170,7 @@ def findScore():
             alist.append(value)
         rec = cursor.next()
     scoreDB.close()
-    printResult(alist)
+    return alist
 def findLess3(alist):
     blist=[]
     filename = 'sc.idx'
@@ -188,11 +187,9 @@ def findLess3(alist):
             blist.append(value)
         rec = cursor.next()
     scoreDB.close()
-    printResult(blist) 
+    return blist 
 def priceChecker(alist):
     blist=[]
-    title = ["product/productId:","product/title:","product/price:","review/userId:","review/profileName:",
-                 "review/helpfulness:","review/score:","review/time:","review/summary:","review/text:"]
     filename1 = 'rw.idx'
     reviewDB = db.DB()
     reviewDB.open(filename1, None, db.DB_HASH, db.DB_CREATE)
@@ -203,16 +200,41 @@ def priceChecker(alist):
             if "unknow" not in a[2]:
                 if float(a[2])<60.0:
                     blist.append(a)
-    for b,i in enumerate(blist):
-        for c,e in enumerate(i):
-            if c==0:
-                print(str(b+1)+"\n"+title[c]+e)
-            elif c==9:
-                print(title[c]+e+"\n")
-            else:
-                print(title[c]+e)
-    reviewDB.close()    
-    print("You find",len(blist),"matches in the result")
+    reviewDB.close()
+    return blist
+def dateChecker(alist):
+    blist=[]
+    filename1 = 'rw.idx'
+    reviewDB = db.DB()
+    reviewDB.open(filename1, None, db.DB_HASH, db.DB_CREATE)
+    for i in alist:
+        result=reviewDB.get(i)
+        result=result.decode("utf-8")
+        for a in csv.reader([result],skipinitialspace=True):
+            st = datetime.datetime.fromtimestamp(int(a[7])).strftime('%Y/%m/%d')
+            if datetime.datetime.strptime(st,'%Y/%m/%d')>datetime.datetime.strptime("2007/06/20",'%Y/%m/%d'):
+                a[7]=a[7]+"    "+st
+                blist.append(a)
+    reviewDB.close()
+    return blist
+def dateCheckerWithPrice(alist):
+    blist=[]
+    filename1 = 'rw.idx'
+    reviewDB = db.DB()
+    reviewDB.open(filename1, None, db.DB_HASH, db.DB_CREATE)
+    for i in alist:
+        result=reviewDB.get(i)
+        result=result.decode("utf-8")
+        for a in csv.reader([result],skipinitialspace=True):
+            st = datetime.datetime.fromtimestamp(int(a[7])).strftime('%Y/%m/%d')
+            if datetime.datetime.strptime(st,'%Y/%m/%d')>datetime.datetime.strptime("2007/06/20",'%Y/%m/%d'):
+                if "unknow" not in a[2]:
+                    if 20.0<float(a[2])<60.0:               
+                        a[7]=a[7]+"    "+st
+                        blist.append(a)
+    reviewDB.close()
+    return blist
+
 a=["1","2","3","4","5","6","7","8","9","10","Q","q"]
 print("Welcome to W&M database management system!")
 printScreen()
@@ -221,27 +243,47 @@ while b not in a:
     b=input("Invalid enter!> ")
 while(b !="q" or b!="Q"):
     if b=="1":
-        searchCamera()
+        alist=searchCamera()
+        alist=fullReviewChecker(alist)
+        printResult(alist)
     elif b=="2":
-        searchGreat()
+        alist=searchGreat()
+        alist=fullReviewChecker(alist)
+        printResult(alist)
     elif b=="3":
-        searchAllCamera(b)
+        alist=searchAllCamera()
+        alist=fullReviewChecker(alist)
+        printResult(alist)        
     elif b=="4":
-        searchIniralCam(b)
+        alist=searchIniralCam()
+        alist=fullReviewChecker(alist)
+        printResult(alist)        
     elif b=="5":
-        alist=searchIniralCam(b)
-        findGreatCam(alist)
+        alist=searchIniralCam()
+        alist=findGreatCam(alist)
+        alist=fullReviewChecker(alist)
+        printResult(alist)        
     elif b=="6":
-        findScore()
+        alist=findScore()
+        alist=fullReviewChecker(alist)
+        printResult(alist)        
     elif b=="7":
-        alist=searchAllCamera(b)
-        findLess3(alist)
+        alist=searchAllCamera()
+        alist=findLess3(alist)
+        alist=fullReviewChecker(alist)
+        printResult(alist)        
     elif b=="8":
-        alist=searchAllCamera(b)
-        priceChecker(alist)
-    #elif b=="9":
-        
-    #elif b=="10":
+        alist=searchAllCamera()
+        alist=priceChecker(alist)
+        printResult(alist)        
+    elif b=="9":
+        alist=searchAllCamera()
+        alist=dateChecker(alist)
+        printResult(alist)        
+    elif b=="10":
+        alist=searchAllCamera()
+        alist=dateCheckerWithPrice(alist)
+        printResult(alist)   
     b=input("Press <anykey> to back main menu OR <q> to quit the system!")
     if b=="q" or b=="Q":
         break

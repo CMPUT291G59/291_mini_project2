@@ -2,20 +2,15 @@ import sys
 import os
 import fileinput
 import re
-def replaceFile(fileToSearch):
-    textToSearch = "\"" 
-    textToReplace ="&quot;"
-    textToSearch2 = "\\" 
-    textToReplace2 ="\\\\"
-    tempFile = open( fileToSearch, 'r+' )
-    for line in fileinput.input( fileToSearch ):
-        tempFile.write( line.replace( textToSearch, textToReplace ) )
-        #tempFile.write( line.replace( textToSearch2, textToReplace2 ) )
-    tempFile.close()
-    tempFile = open( fileToSearch, 'r+' )
-    for line in fileinput.input(fileToSearch):
-        tempFile.write( line.replace( textToSearch2, textToReplace2 ) )
-    tempFile.close()
+def replace_word(infile,old_word,new_word):
+    if not os.path.isfile(infile):
+        print ("Error on replace_word, not a regular file: "+infile)
+        sys.exit(1)
+
+    f1=open(infile,'r').read()
+    f2=open(infile,'w')
+    m=f1.replace(old_word,new_word)
+    f2.write(m)
     
 def makeList(fileName):
 
@@ -48,10 +43,8 @@ def makeList(fileName):
     tempFile.close()
     return clist
 
-def makeReview(fileName):
+def makeReview(alist):
     tempFile=open('reviews.txt','w+')
-    
-    alist=makeList(fileName)
     for i,a in enumerate(alist):
         if i==0:
             tempFile.write(str(i+1))
@@ -62,11 +55,10 @@ def makeReview(fileName):
             i=i+1
     tempFile.close()
 
-def makePterm(fileName):
+def makePterm(alist):
     tempFile=open('pterms.txt','w+')
     blist=[]
     clist=[]
-    alist=makeList(fileName)
     for i, a in enumerate(alist):
         c = a[1].split()
         if c[0][0]=="\"" or c[-1][-1]=="\"":
@@ -90,11 +82,10 @@ def makePterm(fileName):
                 tempFile.write(c1.lower()+","+str(i+1)+"\n")
     tempFile.close() 
            
-def makeRterm(fileName):
+def makeRterm(alist):
     tempFile=open('rterms.txt','w+')
     blist=[]
     clist=[]
-    alist=makeList(fileName)
     for i, a in enumerate(alist):
         c = a[8].split()
         c1=a[9].split()
@@ -126,17 +117,18 @@ def makeRterm(fileName):
                 tempFile.write(c1.lower()+","+str(i+1)+"\n")
     tempFile.close()
 
-def makeScore(fileName):
+def makeScore(alist):
     tempFile=open('scores.txt','w+')
-    alist=makeList(fileName)
     for k,i in enumerate(alist):
         tempFile.write(str(i[6])+","+str(k+1)+"\n")
     tempFile.close()
 
-fileName = input("please enter your file name ")    
-replaceFile(fileName)
-makeReview(fileName)
-makePterm(fileName)
-makeRterm(fileName)
-makeScore(fileName)
+fileName = input("please enter your file name ") 
+replace_word(fileName,"\"" ,"&quot;")
+replace_word(fileName,"\\","\\\\")
+alist=makeList(fileName)
+makeReview(alist)
+makePterm(alist)
+makeRterm(alist)
+makeScore(alist)
 print("Your files are created!")
