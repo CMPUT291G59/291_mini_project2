@@ -57,6 +57,8 @@ def searchCamera():
         rec = cursor.next()
     ptermDB.close()
     return alist
+
+
 def searchGreat():
     alist=[]
     filename = 'rt.idx'
@@ -72,6 +74,7 @@ def searchGreat():
         rec = cursor.next()
     rtermDB.close()
     return alist
+
 def searchAllCamera():
     alist=[]
     filename = 'pt.idx'
