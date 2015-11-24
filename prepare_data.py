@@ -123,15 +123,23 @@ def makeScore(alist):
     for k,i in enumerate(alist):
         tempFile.write(str(i[6])+","+str(k+1)+"\n")
     tempFile.close()
-
+#ask user for input
 fileName = input("please enter your file name ") 
+#starting the time 
 start_time = time.time()
+#replace the character
 replace_word(fileName,"\"" ,"&quot;")
 replace_word(fileName,"\\","\\\\")
+#go through file and store them into a list
 alist=makeList(fileName)
+#convert list in file again with proper formate
 makeReview(alist)
+#convert list in file again with pterm infor proper formate
 makePterm(alist)
+#convert list in file again with rterm infor proper formate
 makeRterm(alist)
+#convert list in file again with score infor proper formate
 makeScore(alist)
 print("Your files are created!")
+#caculate the time
 print("It cost %s seconds" % (time.time() - start_time))

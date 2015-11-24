@@ -3,6 +3,7 @@ import os
 import fileinput
 import re
 import time
+#this program is replace the break.pl file that instructor provide. And same fuctaion which is convert the format for DB_load
 def makeReviewIndex(fileName,fileName1):
     tempFile=open(fileName1,'w+')
     file=open(fileName,'r') 

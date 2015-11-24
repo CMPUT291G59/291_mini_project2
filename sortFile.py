@@ -1,6 +1,7 @@
 import time
 from subprocess import Popen, PIPE
-
+#using linux command and run under python program
+#this fuction is able to sort the file and git rid of duplications.
 start_time = time.time()
 p = Popen('sort -u -o pterms.txt pterms.txt', shell=True,
           stdout=PIPE, stderr=PIPE)

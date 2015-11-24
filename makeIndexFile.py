@@ -1,6 +1,7 @@
 import os
 import time
 from subprocess import Popen, PIPE
+#uising linux command and make .idx file and database is created and ready for the main program
 start_time = time.time()
 p = Popen('db_load -c duplicates=1 -T -t hash -f reviewIdx.txt rw.idx', shell=True,
           stdout=PIPE, stderr=PIPE)

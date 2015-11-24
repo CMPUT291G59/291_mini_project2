@@ -142,20 +142,24 @@ def checkInput(b):
     
     #print(sorted(b))
         
-            
+#this fuction is able to convert all the index into actual information 
 def fullReviewChecker(alist):
     blist=[]
     filename1 = 'rw.idx'
     reviewDB = db.DB()
+    #open file
     reviewDB.open(filename1, None, db.DB_HASH, db.DB_CREATE)
+    #go through everything in a list and find certain index and pull that informationa out
     for i in alist:
         result=reviewDB.get(i)
         result=result.decode("utf-8")
         for a in csv.reader([result],skipinitialspace=True):
+            #append the information into a list
             blist.append(a) 
+    #close file 
     reviewDB.close()
     return blist
-
+#this function is abble to print out the information and with proper title
 def printResult(alist):
     title = ["product/productId:","product/title:","product/price:","review/userId:","review/profileName:",
              "review/helpfulness:","review/score:","review/time:","review/summary:","review/text:"]
@@ -172,7 +176,7 @@ def printResult(alist):
                 print(title[c]+e)
     print("You find",len(alist),"matches in the result")
     
-    
+#find the information that contain ":" which find the information in a term
 def searchterm(x,a):
     alist=[]
     if x==True:
@@ -192,6 +196,7 @@ def searchterm(x,a):
     termDB.close()
     return alist
 
+#find the information in pterm as welll as rterm 
 def searchAllTerm(a):
     alist=[]
     filename = 'pt.idx'
@@ -199,7 +204,6 @@ def searchAllTerm(a):
     ptermDB.open(filename, None, db.DB_BTREE, db.DB_CREATE)
     cursor = ptermDB.cursor()
     rec = cursor.first()
-    #print(len(ptermDB))
     while rec:
         key, value =rec
         key1=key.decode("utf-8")
@@ -222,6 +226,7 @@ def searchAllTerm(a):
     alist=list(set(alist))
     return alist
 
+#partial search which attract the strin with % in pterm or rterm
 def searchInitial(x,a):
     alist=[]
     if x==True:
@@ -242,6 +247,8 @@ def searchInitial(x,a):
     ptermDB.close()  
     alist=list(set(alist))
     return alist    
+
+#partial search which attract the strin with % in all term
 def searchInitialAll(a):
     alist=[]
     filename = 'pt.idx'
@@ -274,7 +281,7 @@ def searchInitialAll(a):
     rtermDB.close()
     alist=list(set(alist))
     return alist
-
+#this fuction is able to find the score
 def findScore(a,b):
     alist=[]
     filename = 'sc.idx'
@@ -293,6 +300,8 @@ def findScore(a,b):
         rec = cursor.next()
     scoreDB.close()
     return alist
+
+#this fuction is able to find the price
 def priceChecker(x,b):
     blist=[]
     filename1 = 'rw.idx'
@@ -312,6 +321,8 @@ def priceChecker(x,b):
             rec = cursor.next()
     reviewDB.close()
     return blist
+
+#this fuction is able to find the date
 def dateChecker(x,b):
     blist=[]
     filename1 = 'rw.idx'
@@ -333,17 +344,22 @@ def dateChecker(x,b):
             rec = cursor.next()
     reviewDB.close()
     return blist    
-
+#print welcome screen
 print("Welcome to W&M database management system!")
+#ask user for input
 input1=input("Enter your input or press 'q' to quite\n")
+#convert them into lower cases
 input1=input1.lower()
+#check input is "q" to quit
 while input1!="q":
+    #try the input if there is error it will ask user to input again 
     try:
         checkInput(input1)
         input1=input("Enter your input or press 'q' to quite\n")
         input1=input1.lower()
         if input1=="q":
             break
-    except TypeError: 
+    except: 
         input1=input("Your enter is invalid! Please try enter again! ")
+#quite system and print the message
 print("Thank you for using our system!")
