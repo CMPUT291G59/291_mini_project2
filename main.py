@@ -50,16 +50,19 @@ def checkInput(b):
                     result=searchInitial(x,c[1])
                     clist.append(result)
                 else:
-                    result=searchPterm(c[1])
+                    x=True
+                    result=searchterm(x,c[1])
                     clist.append(result)
             elif c[0]=="r":
                 if "%" in c[1]:
                     x=False
                     c[1]=c[1][0:-1]
                     result=searchInitial(x,c[1])
-                    clist.append(result)                
-                result=searchRterm(c[1])
-                clist.append(result)
+                    clist.append(result) 
+                else:
+                    x=False
+                    result=searchterm(x,c[1])
+                    clist.append(result)
             else:
                 b=input("Your enter is invalid! Please try enter again! ")
                 checkInput(b)
@@ -130,6 +133,7 @@ def checkInput(b):
     proce_time=time.time() - start_time
     #now the index is already convert to actual data into a list and printResult will match infor stored in the list with proper title 
     printResult(alist)
+    #print(len(a))
     print("it cost %s seconds to process," %(proce_time), "total cost %s seconds "% (time.time()-start_time))
     #b=[]
     #for i in a:
@@ -169,12 +173,15 @@ def printResult(alist):
     print("You find",len(alist),"matches in the result")
     
     
-def searchPterm(a):
+def searchterm(x,a):
     alist=[]
-    filename = 'pt.idx'
-    ptermDB = db.DB()
-    ptermDB.open(filename, None, db.DB_BTREE, db.DB_CREATE)
-    cursor = ptermDB.cursor()
+    if x==True:
+        filename= 'pt.idx'
+    elif x==False:
+        filename = 'rt.idx'    
+    termDB = db.DB()
+    termDB.open(filename, None, db.DB_BTREE, db.DB_CREATE)
+    cursor =termDB.cursor()
     rec = cursor.first()
     while rec:
         key, value =rec
@@ -182,23 +189,9 @@ def searchPterm(a):
         if a == key1:
             alist.append(value)
         rec = cursor.next()
-    ptermDB.close()
+    termDB.close()
     return alist
-def searchRterm(a):
-    alist=[]
-    filename = 'rt.idx'
-    rtermDB = db.DB()
-    rtermDB.open(filename, None, db.DB_BTREE, db.DB_CREATE)
-    cursor = rtermDB.cursor()
-    rec = cursor.first()
-    while rec:
-        key, value =rec
-        key1=key.decode("utf-8")
-        if a == key1:
-            alist.append(value)
-        rec = cursor.next()
-    rtermDB.close()
-    return alist
+
 def searchAllTerm(a):
     alist=[]
     filename = 'pt.idx'
@@ -228,6 +221,7 @@ def searchAllTerm(a):
     rtermDB.close()
     alist=list(set(alist))
     return alist
+
 def searchInitial(x,a):
     alist=[]
     if x==True:
