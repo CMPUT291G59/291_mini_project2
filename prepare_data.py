@@ -2,6 +2,7 @@ import sys
 import os
 import fileinput
 import re
+import time
 def replace_word(infile,old_word,new_word):
     if not os.path.isfile(infile):
         print ("Error on replace_word, not a regular file: "+infile)
@@ -124,6 +125,7 @@ def makeScore(alist):
     tempFile.close()
 
 fileName = input("please enter your file name ") 
+start_time = time.time()
 replace_word(fileName,"\"" ,"&quot;")
 replace_word(fileName,"\\","\\\\")
 alist=makeList(fileName)
@@ -132,3 +134,4 @@ makePterm(alist)
 makeRterm(alist)
 makeScore(alist)
 print("Your files are created!")
+print("It cost %s seconds" % (time.time() - start_time))

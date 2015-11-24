@@ -2,6 +2,7 @@ import sys
 import os
 import fileinput
 import re
+import time
 def makeReviewIndex(fileName,fileName1):
     tempFile=open(fileName1,'w+')
     file=open(fileName,'r') 
@@ -28,10 +29,10 @@ def makeIndex(fileName,fileName1):
     tempFile.close()
     file.close()
     
-    
-    
+start_time = time.time()    
 makeReviewIndex("reviews.txt","reviewIdx.txt")
 makeIndex("pterms.txt","ptermIdx.txt")
 makeIndex("rterms.txt","rtermIdx.txt")
 makeIndex("scores.txt","scoreIdx.txt")
 print("Your file is formated for db_load!")
+print("It cost %s seconds" % (time.time() - start_time))

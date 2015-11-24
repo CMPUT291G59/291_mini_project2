@@ -1,5 +1,7 @@
+import time
 from subprocess import Popen, PIPE
 
+start_time = time.time()
 p = Popen('sort -u -o pterms.txt pterms.txt', shell=True,
           stdout=PIPE, stderr=PIPE)
 out, err = p.communicate()
@@ -10,5 +12,5 @@ p2 = Popen('sort -n -o scores.txt scores.txt', shell=True,
           stdout=PIPE, stderr=PIPE)
 out, err = p2.communicate()
 print("Your file is sorted!")
-
+print("It cost %s seconds" % (time.time() - start_time))
 
